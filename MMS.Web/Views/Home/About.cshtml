@@ -1,0 +1,22 @@
+@model AboutViewModel
+
+<div class="card text-left shadow">
+    <div class="card-header">
+        <h2>@Model.Title</h2>
+    </div>
+    <div class="card-body">
+        <div class="card-body">
+            <h5 class="card-title">Mission Statement</h5>
+            <p>@Model.Message</p>
+            <div>
+                <br>
+                <br>
+                <p><em><b>Contact us</b></em></p>
+                <p><em>@Model.ContactUs</em></p>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            <div>Formed on @Model.FormedString <cite title="Source Title">(@Model.Days days ago)</cite></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+@using MMS.Web.Models
+@model MovieSearchViewModel
+<!-- search form -->
+<form asp-action="Index" method="GET" class="d-flex flex-row align-items-center">
+
+
+    <input class="form-control me-2" asp-for="Query" placeholder="Search by Title, Director, Year or Genre....">
+
+    <button class="btn search btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+    <a asp-action="Index" class="btn search">Clear</a>
+
+</form>

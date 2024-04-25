@@ -1,0 +1,91 @@
+@model MovieViewModel
+
+<div class="d-flex align-items-center justify-content-between border-bottom mb-4">
+    <h3>Create Movie</h3>
+</div>
+
+<div class="card rounded shadow p-4">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <!-- Title -->
+        <div>
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <!-- Director -->
+        <div>
+            <label asp-for="Director" class="form-label"></label>
+            <input asp-for="Director" class="form-control" />
+            <span asp-validation-for="Director" class="text-danger"></span>
+        </div>
+
+        
+        <div class="row">
+            <!-- Year -->
+            <div class="col">
+                <label asp-for="Year" class="form-label"></label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+
+            <!-- Duration -->
+            <div class="col">
+                <label asp-for="MovieDuration" class="form-label">Duration(minutes)</label>
+                <input asp-for="MovieDuration" class="form-control" />
+                <span asp-validation-for="MovieDuration" class="text-danger"></span>
+            </div>
+
+            <!-- Genre -->
+            <div class="col">
+                <label asp-for="Genre" class="form-label"></label>
+                <select asp-items="Html.GetEnumSelectList<Genre>()" class="form-control">
+                    <option disabled selected>Select Genre</option>
+                </select>
+                <span asp-validation-for="Genre" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Cast -->
+        <div>
+            <label asp-for="Cast" class="form-label"></label>
+            <input asp-for="Cast" class="form-control" />
+            <span asp-validation-for="Cast" class="text-danger"></span>
+        </div>
+
+        <!-- Composer -->
+        <div>
+            <label asp-for="Composer" class="form-label">Score Composer</label>
+            <input asp-for="Composer" class="form-control" />
+            <span asp-validation-for="Composer" class="text-danger"></span>
+        </div>
+
+        <!-- Plot Summary -->
+        <div>
+            <label asp-for="PlotSummary" class="form-label"></label>
+            <textarea rows="4" asp-for="PlotSummary" class="form-control"></textarea>
+            <span asp-validation-for="PlotSummary" class="text-danger"></span>
+        </div>
+
+        <!-- PosterUrl -->
+        <div>
+            <label asp-for="PosterUrl" class="form-label"></label>
+            <input asp-for="PosterUrl" class="form-control" />
+            <span asp-validation-for="PosterUrl" class="text-danger"></span>
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-link">Create</button>
+            <a class="btn btn-link buttondelete" asp-action="Index">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

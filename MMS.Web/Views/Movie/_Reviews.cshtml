@@ -1,0 +1,49 @@
+@model Movie
+
+<div class="mb-3 d-flex border-bottom align-items-center justify-content-between">
+    <h3 class="text-secondary">Reviews</h3>
+    <a asp-action="ReviewCreate" asp-route-id="@Model.Id" class="btn-add2 btn-sm btn-secondary"><i
+            class="bi bi-star"></i>Add
+        Review</a>
+
+</div>
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Review Comment</th>
+            <th>Created On</th>
+            <th>Rating</th>
+            <th class="text-end">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Reviews.Count == 0)
+
+
+        {
+            <tr>
+                <td colspan="4">No Reviews...</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var r in Model.Reviews)
+            {
+                <tr>
+                    <td>@r.Statement</td>
+                    <td>@r.CreatedOn</td>
+                    <td>@r.Rating / 5</td>
+                    <td class="text-end">
+                        <a asp-condition=@(User.IsInRole("admin") || User.IsInRole("contributor")) asp-action="ReviewEdit"
+                            asp-route-id="@r.Id" class="btn btn-sm btn-outline-dark">Edit</a>
+                            <br>
+                        <a asp-condition=@User.IsInRole("admin") asp-action="ReviewDelete" asp-route-id="@r.Id"
+                            class="buttondelete btn-sm btn-outline-danger"><i class="bi bi-trash"
+                                title="delete review"></i></a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

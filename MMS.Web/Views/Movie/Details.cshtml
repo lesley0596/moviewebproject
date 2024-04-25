@@ -1,0 +1,86 @@
+@model Movie
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h3 style="font-size: 30px"><b>@Model.Title</b></h3>
+
+    <!-- TBC add anchor link to index action -->
+    <a class="btn-add btn-large" asp-action="Index">Movie List</a>
+
+</div>
+
+<div class="card rounded shadow p-4 myDetails">
+    <div class="row">
+        <!-- Details and Navigation -->
+        <div class="col-8 d-flex flex-column justify-content-between">
+            <!-- Movie details -->
+            <div>
+                <dl class="row">
+
+                    <dt class="col-4 pb-1">Genre</dt>
+                    <dd class="col-8 pb-1">@Model.Genre</dd>
+
+                    <dt class="col-4 pb-1">Director</dt>
+                    <dd class="col-8 pb-1">@Model.Director</dd>
+
+                    <dt class="col-4 pb-1">Year</dt>
+                    <dd class="col-8 pb-1">@Model.Year</dd>
+
+                    <dt class="col-4 pb-1">Duration</dt>
+                    <dd class="col-8 pb-1">@Model.MovieDuration minutes</dd>
+
+                    <dt class="col-4 pb-1">Cast</dt>
+                    <dd class="col-8 pb-1">@Model.Cast</dd>
+
+                    <dt class="col-4 pb-1">Score Composer</dt>
+                    <dd class="col-8 pb-1">@Model.Composer</dd>
+
+                    <dt class="col-4 pb-1">Plot Summary</dt>
+                    <dd class="col-8 pb-1">@Model.PlotSummary</dd>
+
+                    <dt class="col-4 pb-1">Rating</dt>
+                    <dd class="col-8 pb-1">
+                        @if (Model.Rating == 0)
+                        {
+                            <tr>
+                                <td colspan="5" class="text-secondary">No current user rating</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <td><img src="~/images/@(Model.StarRating).png" class="img-fluid stars"></td>
+                        }
+                    </dd>
+
+                </dl>
+            </div>
+
+            <!-- Navigation links -->
+            <div>
+                <a asp-condition=@(User.IsInRole("admin") || User.IsInRole("contributor")) asp-action="Edit"
+                    asp-route-id="@Model.Id" class="btn px-3">Edit</a>
+
+                <a asp-asp-condition=@User.IsInRole("admin") asp-action="Delete" asp-route-id="@Model.Id"
+                    class="btn buttondelete px-3"><i class="bi bi-trash" title="delete movie"></i>Delete</a>
+            </div>
+        </div>
+
+        <!-- Photo -->
+        <div class="col-4">
+            @if (Model.PosterUrl?.Length > 0)
+            {
+                <img src="@Model.PosterUrl" class="img-fluid" aria-label="$Movie Poster for{@Model.Title}">
+            }
+            else
+            {
+                <span>No Photo Available</span>
+            }
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Reviews -->
+<div class="card rounded shadow p-4 mt-4">
+    <partial name="_Reviews" />
+</div>

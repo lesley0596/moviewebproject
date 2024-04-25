@@ -1,0 +1,94 @@
+@* @model IList<Movie> *@
+@model MovieSearchViewModel
+
+
+<!--Page title and buttosn to add a new movie-->
+<div class="d-flex align-items-center justify-content-between border-bottom mb-4">
+    <h3>Movies</h3>
+    <p><a asp-condition=@(User.IsInRole("admin") || User.IsInRole("conrtibutor")) class="btn-add p-0 m-0"
+            asp-action="Create" aria-label="create a movie">Add Movie <i class="bi bi-film"></i></a></p>
+</div>
+
+<!-----partial containg form to search movies *------>
+<partial name="_Search" />
+
+
+<div class="card border rounded shadow p-2 mt-2">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                @* <th>Movie Id</th> *@
+                <th></th>
+                <th>Title
+                    <a class="btn btn-link p-0" asp-action="Index" asp-route-orderBy="title" asp-route-direction="asc">
+                        <i class="bi bi-caret-up" /></i>
+                    </a>
+
+                    <a class="btn btn-link p-0" asp-action="Index" asp-route-orderBy="title" asp-route-direction="desc">
+                        <i class="bi bi-caret-down"></i>
+                    </a>
+                </th>
+                <th>Director
+                     <a class="btn btn-link p-0" asp-action="Index" asp-route-orderBy="director" asp-route-direction="asc">
+                        <i class="bi bi-caret-up" /></i>
+                    </a>
+
+                    <a class="btn btn-link p-0" asp-action="Index" asp-route-orderBy="director" asp-route-direction="desc">
+                        <i class="bi bi-caret-down"></i>
+                    </a>
+                </th>
+                <th>Year
+                     <a class="btn btn-link p-0" asp-action="Index" asp-route-orderBy="year" asp-route-direction="asc">
+                        <i class="bi bi-caret-up" /></i>
+                    </a>
+
+                    <a class="btn btn-link p-0" asp-action="Index" asp-route-orderBy="year" asp-route-direction="desc">
+                        <i class="bi bi-caret-down"></i>
+                    </a>
+                </th>
+                <th>Genre
+                     <a class="btn btn-link p-0" asp-action="Index" asp-route-orderBy="genre" asp-route-direction="asc">
+                        <i class="bi bi-caret-up" /></i>
+                    </a>
+
+                    <a class="btn btn-link p-0" asp-action="Index" asp-route-orderBy="genre" asp-route-direction="desc">
+                        <i class="bi bi-caret-down"></i>
+                    </a>
+                </th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || Model.Movies.Count == 0)
+            {
+                <tr>
+                    <td colspan="5" class="text-secondary">No Movies available</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var m in Model.Movies)
+                {
+                    <tr>
+                        @* <td>@m.Id</td> *@
+                        <td><img src="@m.PosterUrl" class="img-fluid listimg" aria-label="$Movie Poster for{@m.Title}"></td>
+                        <td>@m.Title</td>
+                        <td>@m.Director</td>
+                        <td>@m.Year</td>
+                        <td>@m.Genre</td>
+                        <td class="text-end">
+                            <a class="btn btn-link p-0 m-0" asp-action="Details" asp-route-id="@m.Id">View</a>
+
+                            <a asp-condition=@(User.IsInRole("admin") || User.IsInRole("contributor"))
+                                class="btn btn-link p-0 m-0" asp-action="Edit" asp-route-id="@m.Id">Edit</a>
+
+                            <a asp-condition=@User.IsInRole("admin") class="btn btn-link p-0 m-0 buttondelete"
+                                asp-action="Delete" asp-route-id=@m.Id><i class="bi bi-trash"
+                                    title="delete movie"></i>Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

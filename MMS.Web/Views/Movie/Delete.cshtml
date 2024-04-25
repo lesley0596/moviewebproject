@@ -1,0 +1,51 @@
+@model Movie
+
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+  <h3>Delete Movie</h3>
+</div>
+
+<div class="card rounded shadow p-3">
+  <h4 class="mb-4 text-danger">Are you sure?</h4>
+
+  <!-- display the movie using a <dl> as per Details.cshtml -->
+  <dl class="row">
+    <dt class="col-4 pb-1">Title</dt>
+    <dd class="col-8 pb-1">@Model.Title</dd>
+
+    <dt class="col-4 pb-1">Director</dt>
+    <dd class="col-8 pb-1">@Model.Director</dd>
+
+    <dt class="col-4 pb-1">Year</dt>
+    <dd class="col-8 pb-1">@Model.Year</dd>
+
+    <dt class="col-4 pb-1">Duration</dt>
+    <dd class="col-8 pb-1">@Model.MovieDuration</dd>
+
+    <dt class="col-4 pb-1">Genre</dt>
+    <dd class="col-8 pb-1">@Model.Genre</dd>
+    
+    <dt class="col-4 pb-1">Cast</dt>
+    <dd class="col-8 pb-1">@Model.Cast</dd>
+    
+    <dt class="col-4 pb-1">Score Composer</dt>
+    <dd class="col-8 pb-1">@Model.Composer</dd>
+    
+    <dt class="col-4 pb-1">Plot Summary</dt>
+    <dd class="col-8 pb-1">@Model.PlotSummary</dd>
+    
+    <dt class="col-4 pb-1">Poster Url</dt>
+    <dd class="col-8 pb-1">@Model.PosterUrl</dd>
+  </dl>
+
+  <div class="mt-4">
+    <form asp-action="DeleteConfirm">
+      <input type="hidden" asp-for="Id" class="form-control" />
+
+      <input type="submit" value="Delete" class="btn buttondelete" />
+      <!-- navigation to display movie on cancel -->
+      <a class="btn" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+
+    </form>
+  </div>
+</div>
