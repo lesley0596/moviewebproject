@@ -51,11 +51,11 @@ public class ReviewController : BaseController
             var review = svc.CreateReview(rvm.MovieId, rvm.Statement, rvm.Rating);
             if (review is null)
             {
-                Alert("Review not created", AlertType.warning);
+               
             }
             else
             {
-                Alert("Review Created", AlertType.success);
+                
             }
             return RedirectToAction(nameof(Index));
         }

@@ -12,10 +12,22 @@ public enum AlertType { success, danger, warning, info }
 public class BaseController : Controller
 {
     // set alert message
-    public void Alert(string message, AlertType type = AlertType.info)
+   public void Alert(string message, AlertType type = AlertType.info)
     {
         TempData["Alert.Message"] = message;
         TempData["Alert.Type"] = type.ToString();
+    }
+
+    public void SendAlert(bool condition, string success, string failure)
+    {
+        if (condition)
+        {
+            Alert(success, AlertType.success);
+        }
+        else
+        {
+            Alert(failure, AlertType.danger);
+        }
     }
 
     // return user identity ID if authenticated otherwise 0

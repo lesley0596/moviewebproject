@@ -139,6 +139,16 @@ public class MovieController : BaseController
     //     return View(viewModel);
     // }
 
+       // // GET /movie/index
+    // [HttpGet("movie")]
+    // public IActionResult Index(MovieSearchViewModel search)
+    // {
+
+    //     search.Movies = svc.SearchMovies(search.Query);
+    //     return View(search);
+    // }
+
+
     // GET /movie/details
     public IActionResult Details(int id)
     {
@@ -147,7 +157,8 @@ public class MovieController : BaseController
         // check if m is null and return NotFound()
         if (m == null)
         {
-            return NotFound();
+             Alert($"Movie {id} Not Found..", AlertType.warning);
+            return RedirectToAction(nameof(Index));
         }
 
         // pass movie as parameter to the view
@@ -175,13 +186,16 @@ public class MovieController : BaseController
             var m = ToMovie(mvm);
 
             svc.AddMovie(m);
-            Alert("Movie created successfully.", AlertType.success);
-            //mvm.Id = m.Id;
-            return RedirectToAction(nameof(Index));
+            if(m is null)
+            {
+             Alert($"Movie could not be created..", AlertType.warning);
+                return RedirectToAction(nameof(Details), new { Id = m.Id});
+            }
+
+            return RedirectToAction(nameof(Details), new { Id = m.Id});
         }
 
         // redisplay form for editing if validation errors
-        Alert("Failed to add new movie. Please enter details again.", AlertType.danger);
         return View(mvm);
     }
 
@@ -195,8 +209,8 @@ public class MovieController : BaseController
         // check if m is null and return NotFound()
         if (m == null)
         {
-            Alert("Unable to edit movie. Please try again", AlertType.danger);
-            return NotFound();
+            Alert($"Movie {id} Not Found..", AlertType.warning);
+            return RedirectToAction(nameof(Index));
         }
 
         // pass movie to view for editing
@@ -213,14 +227,18 @@ public class MovieController : BaseController
         if (ModelState.IsValid)
         {
             // pass data to service to update - check if update was successful
-            svc.UpdateMovie(m);
+            var movie = svc.UpdateMovie(m);
+            if (movie is null)
+            {
+             Alert($"Movie could not be updated..", AlertType.warning);
+                return RedirectToAction(nameof(Details), new { Id = m.Id});
+            }
 
-            Alert("Movie updated successfully.", AlertType.success);
+            Alert($"Movie {id} is updated!", AlertType.success);
             return RedirectToAction(nameof(Index));
         }
 
         // redisplay the form for editing as validation errors
-        Alert("Failed to edit the movie details. Please try again.", AlertType.danger);
         return View(m);
     }
 
@@ -234,11 +252,11 @@ public class MovieController : BaseController
         // check the returned movie is not null and if so return NotFound()
         if (m == null)
         {
-            return NotFound();
+            Alert($"Movie {id} could not be deleted..", AlertType.danger);
+            return RedirectToAction(nameof(Index));  
         }
 
         // pass movie to view for deletion confirmation
-        Alert($"Confirm delete {m.Title}", AlertType.danger);
         return View(m);
     }
 
@@ -249,22 +267,20 @@ public class MovieController : BaseController
     public IActionResult DeleteConfirm(int id)
     {
         // delete movie via service
-        svc.DeleteMovie(id);
-
-        Alert("The movie has been deleted!", AlertType.success);
-
+        var deleted = svc.DeleteMovie(id);
+        if (deleted)
+        {
+             Alert(" Deleted", AlertType.success);
+        }
+        else
+        {
+             Alert("Movie could not be deleted", AlertType.warning);
+        }
         // redirect to the index view
         return RedirectToAction(nameof(Index));
     }
 
-    // // GET /movie/index
-    // [HttpGet("movie")]
-    // public IActionResult Index(MovieSearchViewModel search)
-    // {
-
-    //     search.Movies = svc.SearchMovies(search.Query);
-    //     return View(search);
-    // }
+ 
 
 
     // ========================= Movie Review Management ==========================
@@ -276,7 +292,7 @@ public class MovieController : BaseController
         var movie = svc.GetMovie(id);
         if (movie == null)
         {
-            Alert("Movie not found", AlertType.warning);
+            Alert("Movie does not exist", AlertType.warning);
             return RedirectToAction(nameof(Index));
         }
 
@@ -304,7 +320,7 @@ public class MovieController : BaseController
                 Alert("Review could not be created", AlertType.warning);
             }
 
-            // redirect to display movie - note how Id is passed
+            // redirect to display movie - 
             return RedirectToAction(nameof(Details), new { Id = review.MovieId }
             );
         }
@@ -319,7 +335,7 @@ public class MovieController : BaseController
         var review = svc.GetReview(id);
         if (review == null)
         {
-            Alert("Review not found", AlertType.warning);
+             Alert("Review does not exist", AlertType.warning);
             return RedirectToAction(nameof(Index));
         }
         return View(review);
@@ -341,6 +357,7 @@ public class MovieController : BaseController
             else
             {
                 Alert("Review could not be updated", AlertType.warning);
+
             }
 
             return RedirectToAction(
@@ -360,7 +377,7 @@ public class MovieController : BaseController
         // check the returned Ticket is not null and if so return NotFound()
         if (review == null)
         {
-            Alert("Review not found", AlertType.warning);
+            Alert("Review does not exist", AlertType.warning);
             return RedirectToAction(nameof(Index)); ;
         }
 
@@ -378,11 +395,12 @@ public class MovieController : BaseController
         var deleted = svc.DeleteReview(id);
         if (deleted)
         {
-            Alert("Review deleted succcessfully", AlertType.success);
+            Alert("Review deleted Successfully", AlertType.success);
         }
         else
         {
-            Alert("Review could not  be deleted", AlertType.warning);
+            Alert("Review could not be deleted", AlertType.warning);
+
         }
 
         // redirect to the student details view

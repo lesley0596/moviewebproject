@@ -1,12 +1,5 @@
 @model Movie
 
-@* <partial name="_BreadCrumbs" model=@(new [] { 
-    ("/","Home"), 
-    ("/movie","Movies"), 
-    ($"/movie/details/{Model.Id}", $"{Model.Id}"), 
-    ("", "Edit") 
-    }) /> *@
-
 <div class="d-flex align-items-center justify-content-between mb-4">
     <h3>Edit Movie</h3>
 </div>

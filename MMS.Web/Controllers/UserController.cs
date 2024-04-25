@@ -45,7 +45,7 @@ public class UserController : BaseController
         );
 
         // login successful now redirect to home page
-        Alert("Login Successful");
+        
         return RedirectToAction("Index","Home");
     }
 
@@ -75,7 +75,6 @@ public class UserController : BaseController
             var user = _svc.Register(m.Name, m.Email, m.Password, m.Role);               
             
             // registration successful now redirect to login page
-            Alert("Registration Successful. Please Login");
             return RedirectToAction(nameof(Login));
         }
 
@@ -91,21 +90,21 @@ public class UserController : BaseController
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
       
         // logout successful so redirect to login page
-        Alert("Logout Successful");
+        
         return RedirectToAction(nameof(Login));
     }
 
     // GET //user/errornotauthorised
     public IActionResult ErrorNotAuthorised()
     {   
-        Alert("You are not Authorised to Carry out that action");
+       
         return RedirectToAction(nameof(Login)); 
         //return View();
     } 
     // GET //user/errornotauthenticated
     public IActionResult ErrorNotAuthenticated()
     {
-        Alert("You must first Authenticate to carry out that action");
+        
         return RedirectToAction(nameof(Login)); 
     }     
 
